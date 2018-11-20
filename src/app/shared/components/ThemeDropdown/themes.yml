@@ -1,0 +1,17 @@
+---
+- name: theme1
+  color: "#343a40"
+  rotate: 90
+  background: yellow
+- name: theme2
+  color: "#eee"
+  rotate: 0
+  background: blue
+- name: theme3
+  color: "#ede0cd"
+  rotate: -180
+  background: cyan
+- name: theme4
+  color: "#3d5741"
+  rotate: -90
+  background: silver

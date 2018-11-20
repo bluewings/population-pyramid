@@ -1,0 +1,33 @@
+@import "../../../../shared/styles/variables.scss";
+.root {
+  display: block;
+  position: relative;
+  z-index: 10;
+  &:global(.navbar) {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, .1);
+    :global(.navbar-brand) {
+      font-size: 1.75rem;
+      height: 40px;
+      line-height: 45px;
+      padding-top: 0;
+      padding-bottom: 0;
+      img {
+        vertical-align: top;
+        margin-top: 8px;
+        margin-right: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .root {
+    :global(.navbar-brand) {
+      img {
+        display: none;
+      }
+    }
+  }
+}

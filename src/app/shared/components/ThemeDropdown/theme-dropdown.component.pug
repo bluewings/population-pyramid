@@ -1,0 +1,17 @@
+// @import .scss => styles
+div(className='{styles.root}')
+  //- UncontrolledDropdown(
+    nav='{true}', inNavbar='{true}', direction='{direction}')
+  UncontrolledDropdown(nav='{true}', inNavbar='{true}')
+    DropdownToggle(nav='{true}')
+      i.fa.fa-paint-brush
+    DropdownMenu(right='{true}')
+      DropdownItem
+        div(className='{styles.container}')
+          ul(className='{styles.spinner}', style='{selected.spinnerStyle}')
+            li(@for='(each, key, i) in themes',
+              className='{cx(styles.chooser, each.className, theme === each.name && styles.selected)}',
+              data-theme-name='{each.name}',
+              style='{selected.chooserStyle}',
+              onClick='{handleChooserClick}')
+              i.fa.fa-paint-brush(@if='theme === each.name')

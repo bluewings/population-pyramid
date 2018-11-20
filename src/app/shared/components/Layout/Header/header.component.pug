@@ -1,0 +1,11 @@
+// @import .scss => styles
+Fragment
+  nav.navbar.navbar-expand-md(className='{cx(styles.root, ...navbarClass)}')
+    .container
+      a.navbar-brand(href='#')
+        img(src='{flagKor}')
+        | 대한민국 인구 피라미드
+        //- small.collapse.navbar-collapse 1960 ~ 2065
+      .collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+          ThemeDropdown

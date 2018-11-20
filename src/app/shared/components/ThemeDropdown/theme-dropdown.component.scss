@@ -1,0 +1,64 @@
+.root {
+  $chooser-size: 48px;
+  $chooser-margin: 6px;
+  :global(.dropdown-menu) {
+    min-width: auto;
+    border-bottom-left-radius: 10%;
+    border-bottom-right-radius: 10%;
+    transition: .35s;
+    display: block;
+    transform-origin: 90% 10%;
+    opacity: .5;
+    top: -18px;
+    right: -20px;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
+    padding: 0;
+    &:global(.show) {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: initial;
+    }
+    >button:global(.dropdown-item) {
+      padding: 10px;
+      outline: none;
+      &:hover,
+      &:focus {
+        background-color: transparent;
+      }
+    }
+  }
+  .container {
+    width: $chooser-size * 2;
+    height: $chooser-size * 2;
+    .spinner {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      transition-property: transform;
+      padding: 0;
+    }
+    .chooser {
+      display: block;
+      width: $chooser-size - $chooser-margin * 2;
+      height: $chooser-size - $chooser-margin * 2;
+      margin: $chooser-margin;
+      border-radius: 50%;
+      text-align: center;
+      box-shadow: 0 0 2px rgba(0, 0, 0, .5);
+      cursor: pointer;
+      transition-property: transform;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // color: #fff;
+      &.selected {
+        // background: red;
+        // border: 2px solid red;
+      }
+    }
+  }
+}
