@@ -21,8 +21,6 @@ CONSTANT.HEIGHT = CONSTANT.MARGIN * 2 + CONSTANT.BAR_HEIGHT * 100 + 300;
 
 const viewBox = [0, 0, CONSTANT.WIDTH, CONSTANT.HEIGHT].join(' ');
 
-// var height = 1000;
-
 const alData = al1.low;
 
 var inner = {
@@ -139,8 +137,6 @@ class Pyramid extends PureComponent {
         return [...prev, max.men, max.women];
       }, []),
     );
-
-    this.maxCount = maxCount;
 
     this._maxCount = getValue(maxCount);
 
@@ -335,7 +331,6 @@ class Pyramid extends PureComponent {
   render() {
 
     const { d, d2, total, year, xAxis, average, yAxis1, yAxis2, generations, label } = this.state;
-    const { maxCount, _maxCount } = this;
 
     return template.call(this, {
       // variables
