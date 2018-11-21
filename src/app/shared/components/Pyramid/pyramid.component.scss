@@ -20,6 +20,12 @@
       fill: none;
       stroke: black;
     }
+    .axis {
+      font-size: 16px;
+    }
+    .axisTick {
+      stroke: black;
+    }
   }
 }
 
@@ -28,6 +34,12 @@
     svg {
       // 차트를 감싸는 박스
       .inner {
+        stroke: #fff;
+      }
+      .axis {
+      fill:#fff;
+      }
+      .axisTick {
         stroke: #fff;
       }
     }

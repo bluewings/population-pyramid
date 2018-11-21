@@ -8,6 +8,41 @@ div(className='{styles.root}')
         x='{inner.left}', y='{inner.top}',
         width='{inner.width}', height='{inner.height}')
 
+      //- g
+      text(@if='label'
+        className='{styles.axis}',
+        x='{label.yAxis1.x}', y='{label.yAxis1.y}',
+        textAnchor='end'
+        alignmentBaseline='middle'
+        letterSpacing='2')
+        | {label.yAxis1.text}
+      text(@for='yAxis in yAxis1', x='{yAxis.x}', y='{yAxis.y}',
+        className='{styles.axis}',
+        textAnchor='end'
+        alignmentBaseline='middle'
+        letterSpacing='2')
+        | {yAxis.text}
+      path(@for='yAxis in yAxis1',
+        className='{styles.axisTick}',
+        d='{yAxis.tick.d}', stroke='black')
+
+      text(@if='label'
+        className='{styles.axis}',
+        x='{label.yAxis2.x}', y='{label.yAxis2.y}',
+        textAnchor="start"
+        alignmentBaseline="middle"
+        letterSpacing='2')
+        | {label.yAxis2.text}
+      text(@for='yAxis in yAxis2', x='{yAxis.x}', y='{yAxis.y}',
+        className='{styles.axis}',
+        textAnchor="start"
+        alignmentBaseline="middle"
+        letterSpacing='2')
+        | {yAxis.text}
+      path(@for='yAxis in yAxis2',
+        className='{styles.axisTick}',
+        d='{yAxis.tick.d}', stroke='black')
+
       //- Fragment(@if='xAxis')
         g(@for='eee in xAxis.tickL')
           path(d='{eee.tick}', stroke='black')
@@ -38,32 +73,9 @@ div(className='{styles.root}')
         ) {char}
         
 
+
       g
-        text(@if='label'
-          x='{label.yAxis1.x}', y='{label.yAxis1.y}',
-          textAnchor="end"
-          alignmentBaseline="middle"
-          letterSpacing='2')
-          | {label.yAxis1.text}
-        text(@for='yAxis in yAxis1', x='{yAxis.x}', y='{yAxis.y}',
-          textAnchor="end"
-          alignmentBaseline="middle"
-          letterSpacing='2')
-          | {yAxis.text}
-        path(@for='yAxis in yAxis1', d='{yAxis.tick.d}', stroke='black')
-      g
-        text(@if='label'
-          x='{label.yAxis2.x}', y='{label.yAxis2.y}',
-          textAnchor="start"
-          alignmentBaseline="middle"
-          letterSpacing='2')
-          | {label.yAxis2.text}
-        text(@for='yAxis in yAxis2', x='{yAxis.x}', y='{yAxis.y}',
-          textAnchor="start"
-          alignmentBaseline="middle"
-          letterSpacing='2')
-          | {yAxis.text}
-        path(@for='yAxis in yAxis2', d='{yAxis.tick.d}', stroke='black')
+
       //- g
         text(@for='e in generations', x='{width / 2}', y='{e.y}',
           textAnchor='middle' )

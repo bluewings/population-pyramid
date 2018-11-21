@@ -35,6 +35,21 @@ inner = {
   bottom: inner.top + inner.height,
 };
 
+var axisTick = [...Array(11)].map((e, i) => i * 10);
+
+var yAxis1 = axisTick.map(e => {
+  return {
+    x: inner.left - 20,
+    y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
+    tick: {
+      d: ['M', inner.left, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.left - 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
+        ' ',
+      ),
+    },
+    text: e,
+  };
+});
+
 var gens = [
   {
     from: 1954,
@@ -197,18 +212,6 @@ class Pyramid extends PureComponent {
                 text: '출생년도',
               },
             },
-            yAxis1: axisTick.map(e => {
-              return {
-                x: inner.left - 20,
-                y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
-                tick: {
-                  d: ['M', inner.left, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.left - 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
-                    ' ',
-                  ),
-                },
-                text: e,
-              };
-            }),
             yAxis2: axisTick.map(e => {
               return {
                 tick: {
@@ -302,7 +305,8 @@ class Pyramid extends PureComponent {
 
   render() {
 
-    const { d, d2, total, year, xAxis, average, yAxis1, yAxis2, generations, label } = this.state;
+    // const { d, d2, total, year, xAxis, average, yAxis1, yAxis2, generations, label } = this.state;
+    const { d, d2, total, year, xAxis, average, yAxis2, generations, label } = this.state;
 
     return template.call(this, {
       // variables
