@@ -7,9 +7,7 @@ div(className='{styles.root}')
       rect(className='{styles.inner}',
         x='{inner.left}', y='{inner.top}',
         width='{inner.width}', height='{inner.height}')
-        
-      //- path(@for='path in paths',
-        d='{path.d}', stroke='black')
+
       Fragment(@if='xAxis')
         g(@for='eee in xAxis.tickL')
           path(d='{eee.tick}', stroke='black')
