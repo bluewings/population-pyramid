@@ -8,7 +8,7 @@ div(className='{styles.root}')
         x='{inner.left}', y='{inner.top}',
         width='{inner.width}', height='{inner.height}')
 
-      Fragment(@if='xAxis')
+      //- Fragment(@if='xAxis')
         g(@for='eee in xAxis.tickL')
           path(d='{eee.tick}', stroke='black')
           text(x='{eee.text.x}',
@@ -29,7 +29,7 @@ div(className='{styles.root}')
     g
 
 
-      text(@for='(char, key, i) in yearChars',
+      //- text(@for='(char, key, i) in yearChars',
         x='{((width - (yearChars.length - 1) * 40) / 2) + (i * 40)}', y='{115}',
         fontSize='36px',
         
@@ -64,20 +64,23 @@ div(className='{styles.root}')
           letterSpacing='2')
           | {yAxis.text}
         path(@for='yAxis in yAxis2', d='{yAxis.tick.d}', stroke='black')
-      g
+      //- g
         text(@for='e in generations', x='{width / 2}', y='{e.y}',
           textAnchor='middle' )
           | {e.text}
 
-      Fragment(@if='d')
+      //- 좌측 인구 피라미드
+      //- Fragment(@if='d')
         path(@for='e in d',
           d='{e.d}', fill='none', stroke='black', strokeWidth='{0.5}')
-      Fragment(@if='d2')
+
+      //- 우측 인구 피라미드
+      //- Fragment(@if='d2')
         path(@for='e in d2',
           d='{e.d}', fill='none', stroke='black')
         
 
-      Fragment(@if='total')
+      //- Fragment(@if='total')
 
         text(@for='(char, key, i) in total.menChars',
           x='{inner.left + (i * 20) + 11}', y='{915}',
@@ -105,7 +108,7 @@ div(className='{styles.root}')
           textAnchor='middle'
           alignmentBaseline="middle"
           ) {char}
-    g(@if='average')
+    //- g(@if='average')
       text(x='{width / 2 + 90}', y='{average.women.y}'
         textAnchor='start'
       )

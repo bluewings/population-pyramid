@@ -306,23 +306,22 @@ class Pyramid extends PureComponent {
 
     return template.call(this, {
       // variables
-      average,
-      d,
-      d2,
-      generations,
+      unused_average: average,
+      unused_d: d,
+      unused_d2: d2,
+      unused_generations: generations,
       imgSrc,
       inner,
       label,
-      total,
+      unused_total: total,
       viewBox,
-      width: CONSTANT.WIDTH,
-      xAxis,
+      unused_width: CONSTANT.WIDTH,
+      unused_xAxis: xAxis,
       yAxis1,
       yAxis2,
       unused_year: year,
-      yearChars: (year || '').toString().split(''),
-      // components
-      Fragment,
+      unused_yearChars: (year || '').toString().split(''),
+      unused_Fragment: Fragment,
     });
   }
 }
