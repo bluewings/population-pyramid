@@ -4,7 +4,11 @@ div(className='{styles.root}')
   svg(width='100%', viewBox='{viewBox}', xmlns='http://www.w3.org/2000/svg')
 
     g
-      path(@for='path in paths',
+      rect(className='{styles.inner}',
+        x='{inner.left}', y='{inner.top}',
+        width='{inner.width}', height='{inner.height}')
+        
+      //- path(@for='path in paths',
         d='{path.d}', stroke='black')
       Fragment(@if='xAxis')
         g(@for='eee in xAxis.tickL')

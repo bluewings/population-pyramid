@@ -35,7 +35,7 @@ function ThemeDropdown({ theme, setTheme }) {
     const selected = themes.find(({ name }) => name === theme) || themes[0];
     const { rotate, spinnerStyle, chooserStyle } = getSelected(rotateRef.current, selected.rotate);
     rotateRef.current = rotate;
-    return { spinnerStyle, chooserStyle, className: selected.className };
+    return { spinnerStyle, chooserStyle, name: selected.name, className: selected.className };
   }, [theme]);
 
   const handleChooserClick = (event) => {
@@ -44,11 +44,13 @@ function ThemeDropdown({ theme, setTheme }) {
   };
 
   useEffect(() => {
+    document.body.classList.add(selected.name);
     document.body.classList.add(selected.className);
     return () => {
+      document.body.classList.remove(selected.name);
       document.body.classList.remove(selected.className);
     };
-  }, [selected.className]);
+  }, [selected.name, selected.className]);
 
   return template({
     // variables

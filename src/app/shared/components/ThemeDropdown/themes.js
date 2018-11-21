@@ -4,7 +4,7 @@ import beigeBg from 'media/beige-bg.jpg';
 
 const defined = [
   {
-    name: 'theme-light-1',
+    name: 'theme1',
     color: '#343a40',
     background: 'yellow',
     className: css({
@@ -14,7 +14,7 @@ const defined = [
     })
   },
   {
-    name: 'theme-dark-1',
+    name: 'theme2',
     color: '#eee',
     background: 'blue',
     className: css({
@@ -24,7 +24,7 @@ const defined = [
     })
   },
   {
-    name: 'theme-dark-2',
+    name: 'theme3',
     color: '#ede0cd',
     background: 'cyan',
     // background: brownBg,
@@ -34,7 +34,7 @@ const defined = [
     })
   },
   {
-    name: 'theme-light-2',
+    name: 'theme4',
     color: '#3d5741',
     background: 'silver',
     className: css({

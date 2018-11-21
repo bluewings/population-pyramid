@@ -23,45 +23,17 @@ const viewBox = [0, 0, CONSTANT.WIDTH, CONSTANT.HEIGHT].join(' ');
 
 const alData = al1.low;
 
-var inner = {
+let inner = {
   top: CONSTANT.MARGIN,
   left: CONSTANT.MARGIN,
-  right: CONSTANT.WIDTH - CONSTANT.MARGIN,
-  bottom: CONSTANT.MARGIN + CONSTANT.BAR_HEIGHT * 100,
+  width: CONSTANT.WIDTH - CONSTANT.MARGIN * 2,
+  height: CONSTANT.BAR_HEIGHT * 100,
 };
-
-let paths = {
-  yAxis1: [
-
-    [inner.left, inner.top],
-    [inner.left, inner.bottom],
-  ],
-  yAxis2: [
-
-    [inner.right, inner.top],
-    [inner.right, inner.bottom],
-  ],
-  xAxis1: [
-
-    [inner.left, inner.top],
-    [inner.right, inner.top],
-  ],
-  xAxis2: [
-
-    [inner.left, inner.bottom],
-    [inner.right, inner.bottom],
-  ],
+inner = {
+  ...inner,
+  right: inner.left + inner.width,
+  bottom: inner.top + inner.height,
 };
-paths = entries(paths).map(([name, value]) => {
-  return {
-    name,
-    d: value
-      .map(([x, y], i) => {
-        return (i === 0 ? 'M' : 'L ') + x + ' ' + y;
-      })
-      .join(' '),
-  };
-});
 
 var gens = [
   {
@@ -341,7 +313,6 @@ class Pyramid extends PureComponent {
       imgSrc,
       inner,
       label,
-      paths,
       total,
       viewBox,
       width: CONSTANT.WIDTH,
