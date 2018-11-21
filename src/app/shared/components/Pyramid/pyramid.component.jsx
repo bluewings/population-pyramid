@@ -1,65 +1,57 @@
 import React, { Fragment, PureComponent } from 'react';
-import { css } from 'emotion';
+
 import entries from 'object.entries';
 import memoizeOne from 'memoize-one';
-import imgSrc from './sample.gif';
+import imgSrc from './sample2.png';
 import al1 from 'data/population';
 import template from './pyramid.component.pug';
-
-const bodyClass = css({
-  /* ... */
-});
 
 const numberWithCommas = x => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-var width = 865;
+const CONSTANT = {
+  WIDTH: 930,
+  HEIGHT: 930,
+  MARGIN: 80,
+  BAR_HEIGHT: 5,
+}
+
+CONSTANT.HEIGHT = CONSTANT.MARGIN * 2 + CONSTANT.BAR_HEIGHT * 100;
+
+const viewBox = [0, 0, CONSTANT.WIDTH, CONSTANT.HEIGHT].join(' ');
+
 var height = 1000;
 
-const alData = al1.principal;
+const alData = al1.low;
 
-console.log(alData);
-
-var pad = {
-  top: 225,
-  left: 80,
-  right: 80,
-  
-};
-
-var tWidth = 865;
-var tHeight = 1000;
-
-var barHeight = 6;
-
-var box = {
-  top: pad.top,
-  left: pad.left,
-  right: tWidth - pad.right,
-  bottom: pad.top + barHeight * 100,
+var inner = {
+  top: CONSTANT.MARGIN,
+  left: CONSTANT.MARGIN,
+  right: CONSTANT.WIDTH - CONSTANT.MARGIN,
+  bottom: CONSTANT.MARGIN + CONSTANT.BAR_HEIGHT * 100,
 };
 
 let paths = {
   yAxis1: [
 
-    [box.left, box.top],
-    [box.left, box.bottom],
+    [inner.left, inner.top],
+    [inner.left, inner.bottom],
   ],
   yAxis2: [
 
-    [box.right, box.top],
-    [box.right, box.bottom],
+    [inner.right, inner.top],
+    [inner.right, inner.bottom],
   ],
   xAxis1: [
 
-    [box.left, box.top],
-    [box.right, box.top],
+    [inner.left, inner.top],
+    [inner.right, inner.top],
   ],
   xAxis2: [
 
-    [box.left, box.bottom],
-    [box.right, box.bottom],
+    [inner.left, inner.bottom],
+    [inner.right, inner.bottom],
   ],
 };
 paths = entries(paths).map(([name, value]) => {
@@ -76,7 +68,7 @@ paths = entries(paths).map(([name, value]) => {
 var gens = [
   {
     from: 1954,
-    name: '베이비붐 세대',
+    name: '베이비부머',
   },
   {
     from: 1963,
@@ -132,17 +124,14 @@ class Pyramid extends PureComponent {
 
   censusData = memoizeOne((width, height) => {
     var gap = 0;
-    let chartHeight = height;
+    
+    let chartHeight = CONSTANT.MARGIN + CONSTANT.BAR_HEIGHT * 100;
     var centerBoxW = 180;
     
-    let center = width / 2;
+    let center = CONSTANT.WIDTH / 2;
 
-    var barHeight = Math.ceil(chartHeight / 101) - 1;
-
-    barHeight = 6;
-    chartHeight = chartHeight - 175;
-    if (barHeight - gap < 3) {
-      gap = barHeight - 3;
+    if (CONSTANT.BAR_HEIGHT - gap < 3) {
+      gap = CONSTANT.BAR_HEIGHT - 3;
     }
 
     const maxCount = Math.max(
@@ -151,27 +140,19 @@ class Pyramid extends PureComponent {
       }, []),
     );
 
-    const maxTotalCount = Math.max(
-      ...entries(alData).reduce((prev, [, { total }]) => {
-        return [...prev, total.men, total.women];
-      }, []),
-    );
-
-    // console.log(numberWithCommas(maxTotalCount));
-
     this.maxCount = maxCount;
 
     this._maxCount = getValue(maxCount);
 
-    center = tWidth / 2;
-    var halfW = center - box.left - centerBoxW / 2;
+    center = CONSTANT.WIDTH / 2;
+    var halfW = center - inner.left - centerBoxW / 2;
 
     var widthWeight = halfW / this._maxCount._maxCount;
 
     var womenX = center + centerBoxW / 2;
     var menX = center - centerBoxW / 2;
 
-    var xALW = menX - box.left;
+    var xALW = menX - inner.left;
     var xALEach = xALW / this._maxCount.divide;
     var xEachCnt = this._maxCount._maxCount / this._maxCount.divide / 1000;
 
@@ -187,11 +168,11 @@ class Pyramid extends PureComponent {
           [year]: {
             average: {
               men: {
-                y: box.bottom - average.men * barHeight,
+                y: inner.bottom - average.men * CONSTANT.BAR_HEIGHT,
                 text: average.men
               },
               women: {
-                y: box.bottom - average.women * barHeight,
+                y: inner.bottom - average.women * CONSTANT.BAR_HEIGHT,
                 text: average.women
               },
             },
@@ -202,7 +183,7 @@ class Pyramid extends PureComponent {
               .map(e => {
                 return {
                   x: center,
-                  y: chartHeight - (year - e.from) * barHeight,
+                  y: chartHeight - (year - e.from) * CONSTANT.BAR_HEIGHT,
                   text: e.name,
                 };
               }),
@@ -211,7 +192,7 @@ class Pyramid extends PureComponent {
             xAxis: {
               tickL: [...Array(this._maxCount.divide + 1)].map((e, i) => {
                 var x = menX - xALEach * i;
-                var y = box.bottom;
+                var y = inner.bottom;
                 return {
                   tick: ['M' + x + ' ' + y, 'L' + x + ' ' + (y + 5)].join(' '),
                   text: {
@@ -223,7 +204,7 @@ class Pyramid extends PureComponent {
               }),
               tickR: [...Array(this._maxCount.divide + 1)].map((e, i) => {
                 var x = womenX + xALEach * i;
-                var y = box.bottom;
+                var y = inner.bottom;
                 return {
                   tick: ['M' + x + ' ' + y, 'L' + x + ' ' + (y + 5)].join(' '),
                   text: {
@@ -236,22 +217,24 @@ class Pyramid extends PureComponent {
             },
             label: {
               yAxis1: {
-                x: box.left - 20,
-                y: box.bottom - 108 * barHeight,
-                text: 'AGE',
+                x: inner.left - 20,
+                y: inner.bottom - 108 * CONSTANT.BAR_HEIGHT,
+                
+                text: '나이',
               },
               yAxis2: {
-                x: box.right + 17,
-                y: box.bottom - 108 * barHeight,
-                text: 'BORN',
+                x: inner.right + 17,
+                y: inner.bottom - 108 * CONSTANT.BAR_HEIGHT,
+                
+                text: '출생년도',
               },
             },
             yAxis1: axisTick.map(e => {
               return {
-                x: box.left - 20,
-                y: box.bottom - e * barHeight,
+                x: inner.left - 20,
+                y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
                 tick: {
-                  d: ['M', box.left, box.bottom - e * barHeight, 'L', box.left - 5, box.bottom - e * barHeight].join(
+                  d: ['M', inner.left, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.left - 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
                     ' ',
                   ),
                 },
@@ -261,12 +244,12 @@ class Pyramid extends PureComponent {
             yAxis2: axisTick.map(e => {
               return {
                 tick: {
-                  d: ['M', box.right, box.bottom - e * barHeight, 'L', box.right + 5, box.bottom - e * barHeight].join(
+                  d: ['M', inner.right, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.right + 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
                     ' ',
                   ),
                 },
-                x: box.right + 20,
-                y: box.bottom - e * barHeight,
+                x: inner.right + 20,
+                y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
                 text: year - e,
               };
             }),
@@ -281,10 +264,10 @@ class Pyramid extends PureComponent {
                 return {
                   age,
                   d: [
-                    'M ' + womenX + ' ' + (chartHeight - age * barHeight),
-                    'L ' + (womenX + women * widthWeight) + ' ' + (chartHeight - age * barHeight),
-                    'L ' + (womenX + women * widthWeight) + ' ' + (chartHeight - (age + 1) * barHeight + gap),
-                    'L ' + womenX + ' ' + (chartHeight - (age + 1) * barHeight + gap),
+                    'M ' + womenX + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
+                    'L ' + (womenX + women * widthWeight) + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
+                    'L ' + (womenX + women * widthWeight) + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
+                    'L ' + womenX + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
                   ].join(' '),
                 };
               }),
@@ -294,10 +277,10 @@ class Pyramid extends PureComponent {
                 return {
                   age,
                   d: [
-                    'M ' + menX + ' ' + (chartHeight - age * barHeight),
-                    'L ' + (menX - men * widthWeight) + ' ' + (chartHeight - age * barHeight),
-                    'L ' + (menX - men * widthWeight) + ' ' + (chartHeight - (age + 1) * barHeight + gap),
-                    'L ' + menX + ' ' + (chartHeight - (age + 1) * barHeight + gap),
+                    'M ' + menX + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
+                    'L ' + (menX - men * widthWeight) + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
+                    'L ' + (menX - men * widthWeight) + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
+                    'L ' + menX + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
                   ].join(' '),
                 };
               })
@@ -310,7 +293,7 @@ class Pyramid extends PureComponent {
 
   update = years => {
 
-    var censusData = this.censusData(width, height);
+    var censusData = this.censusData(null, height);
     var data = censusData.years[years];
 
     this.setState({
@@ -358,17 +341,18 @@ class Pyramid extends PureComponent {
       
       unused__maxCount: _maxCount,
       average,
-      box,
       d,
       d2,
       generations,
-      height,
-      unused_imgSrc: imgSrc,
+      unused_height: height,
+      imgSrc,
+      inner,
       label,
       unused_maxCount: maxCount,
       paths,
       total,
-      width,
+      viewBox,
+      width: CONSTANT.WIDTH,
       xAxis,
       yAxis1,
       yAxis2,
@@ -379,9 +363,5 @@ class Pyramid extends PureComponent {
     });
   }
 }
-
-Pyramid.propTypes = {
-  
-};
 
 export default Pyramid;
