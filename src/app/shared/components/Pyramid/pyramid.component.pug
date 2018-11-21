@@ -3,9 +3,6 @@ div(className='{styles.root}')
   img(src='{imgSrc}' width="100%")
   svg(width='100%', viewBox='{viewBox}', xmlns='http://www.w3.org/2000/svg')
 
-
-
-
     g
       path(@for='path in paths',
         d='{path.d}', stroke='black')
@@ -69,7 +66,7 @@ div(className='{styles.root}')
         text(@for='e in generations', x='{width / 2}', y='{e.y}',
           textAnchor='middle' )
           | {e.text}
-          //- | {e.from}
+
       Fragment(@if='d')
         path(@for='e in d',
           d='{e.d}', fill='none', stroke='black', strokeWidth='{0.5}')
@@ -115,6 +112,5 @@ div(className='{styles.root}')
         textAnchor='end'
       )
         | 평균 연령 = {average.men.text}    
-
 
   div(ref='{this.rootRef}')

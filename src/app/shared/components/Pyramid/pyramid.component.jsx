@@ -17,11 +17,11 @@ const CONSTANT = {
   BAR_HEIGHT: 5,
 }
 
-CONSTANT.HEIGHT = CONSTANT.MARGIN * 2 + CONSTANT.BAR_HEIGHT * 100;
+CONSTANT.HEIGHT = CONSTANT.MARGIN * 2 + CONSTANT.BAR_HEIGHT * 100 + 300;
 
 const viewBox = [0, 0, CONSTANT.WIDTH, CONSTANT.HEIGHT].join(' ');
 
-var height = 1000;
+// var height = 1000;
 
 const alData = al1.low;
 
@@ -293,7 +293,7 @@ class Pyramid extends PureComponent {
 
   update = years => {
 
-    var censusData = this.censusData(null, height);
+    var censusData = this.censusData(null, null);
     var data = censusData.years[years];
 
     this.setState({
@@ -338,17 +338,14 @@ class Pyramid extends PureComponent {
     const { maxCount, _maxCount } = this;
 
     return template.call(this, {
-      
-      unused__maxCount: _maxCount,
+      // variables
       average,
       d,
       d2,
       generations,
-      unused_height: height,
       imgSrc,
       inner,
       label,
-      unused_maxCount: maxCount,
       paths,
       total,
       viewBox,
@@ -358,7 +355,7 @@ class Pyramid extends PureComponent {
       yAxis2,
       unused_year: year,
       yearChars: (year || '').toString().split(''),
-      
+      // components
       Fragment,
     });
   }
