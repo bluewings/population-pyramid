@@ -16,32 +16,49 @@
     top: 0;
     left: 0;
     border: 1px solid red; // 차트를 감싸는 박스
+    // .inner {
+    //   fill: none;
+    //   stroke: black;
+    // }
+    // .axis {
+    // }
+    // .axisTick {
+    //   stroke: black;
+    // }
     .inner {
-      fill: none;
-      stroke: black;
-    }
-    .axis {
-      font-size: 16px;
-    }
-    .axisTick {
-      stroke: black;
+      text {
+        fill: #000;
+        font-size: 18px;
+
+      }
+      rect, path {
+        fill: none;
+        stroke: #000;
+      }
     }
   }
 }
 
-:global(.theme2), :global(.theme3) {
+:global(.theme2),
+:global(.theme3) {
   .root {
     svg {
       // 차트를 감싸는 박스
+      // .inner {
+      //   stroke: #fff;
+      // }
       .inner {
-        stroke: #fff;
-      }
-      .axis {
-      fill:#fff;
-      }
-      .axisTick {
-        stroke: #fff;
-      }
+        text {
+          // font-size: 16px;
+          fill: #fff;
+        }
+        rect,
+        path {
+          stroke: #fff;
+        }
+      } // .axisTick {
+      //   stroke: #fff;
+      // }
     }
   }
 }

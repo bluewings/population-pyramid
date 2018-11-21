@@ -3,47 +3,41 @@ div(className='{styles.root}')
   img(src='{imgSrc}' width="100%")
   svg(width='100%', viewBox='{viewBox}', xmlns='http://www.w3.org/2000/svg')
 
-    g
-      rect(className='{styles.inner}',
+    g(className='{styles.inner}')
+      //- rect(className='{styles.inner}',
+      rect(
         x='{inner.left}', y='{inner.top}',
         width='{inner.width}', height='{inner.height}')
 
-      //- g
       text(@if='label'
-        className='{styles.axis}',
         x='{label.yAxis1.x}', y='{label.yAxis1.y}',
         textAnchor='end'
         alignmentBaseline='middle'
         letterSpacing='2')
         | {label.yAxis1.text}
+      path(@for='yAxis in yAxis1', d='{yAxis.tick.d}')
       text(@for='yAxis in yAxis1', x='{yAxis.x}', y='{yAxis.y}',
-        className='{styles.axis}',
         textAnchor='end'
         alignmentBaseline='middle'
         letterSpacing='2')
         | {yAxis.text}
-      path(@for='yAxis in yAxis1',
-        className='{styles.axisTick}',
-        d='{yAxis.tick.d}', stroke='black')
+      
 
       text(@if='label'
-        className='{styles.axis}',
         x='{label.yAxis2.x}', y='{label.yAxis2.y}',
         textAnchor="start"
         alignmentBaseline="middle"
         letterSpacing='2')
         | {label.yAxis2.text}
+      path(@for='yAxis in yAxis2', d='{yAxis.tick.d}')
       text(@for='yAxis in yAxis2', x='{yAxis.x}', y='{yAxis.y}',
-        className='{styles.axis}',
         textAnchor="start"
         alignmentBaseline="middle"
         letterSpacing='2')
-        | {yAxis.text}
-      path(@for='yAxis in yAxis2',
-        className='{styles.axisTick}',
-        d='{yAxis.tick.d}', stroke='black')
+        | {year - yAxis.age}
 
-      //- Fragment(@if='xAxis')
+
+      Fragment(@if='xAxis')
         g(@for='eee in xAxis.tickL')
           path(d='{eee.tick}', stroke='black')
           text(x='{eee.text.x}',
@@ -64,7 +58,7 @@ div(className='{styles.root}')
     g
 
 
-      //- text(@for='(char, key, i) in yearChars',
+      text(@for='(char, key, i) in yearChars',
         x='{((width - (yearChars.length - 1) * 40) / 2) + (i * 40)}', y='{115}',
         fontSize='36px',
         
@@ -76,23 +70,23 @@ div(className='{styles.root}')
 
       g
 
-      //- g
+      g
         text(@for='e in generations', x='{width / 2}', y='{e.y}',
           textAnchor='middle' )
           | {e.text}
 
       //- 좌측 인구 피라미드
-      //- Fragment(@if='d')
+      Fragment(@if='d')
         path(@for='e in d',
           d='{e.d}', fill='none', stroke='black', strokeWidth='{0.5}')
 
       //- 우측 인구 피라미드
-      //- Fragment(@if='d2')
+      Fragment(@if='d2')
         path(@for='e in d2',
           d='{e.d}', fill='none', stroke='black')
         
 
-      //- Fragment(@if='total')
+      Fragment(@if='total')
 
         text(@for='(char, key, i) in total.menChars',
           x='{inner.left + (i * 20) + 11}', y='{915}',
@@ -120,7 +114,7 @@ div(className='{styles.root}')
           textAnchor='middle'
           alignmentBaseline="middle"
           ) {char}
-    //- g(@if='average')
+    g(@if='average')
       text(x='{width / 2 + 90}', y='{average.women.y}'
         textAnchor='start'
       )

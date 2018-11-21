@@ -50,6 +50,20 @@ var yAxis1 = axisTick.map(e => {
   };
 });
 
+let             yAxis2 = axisTick.map(e => {
+  return {
+    tick: {
+      d: ['M', inner.right, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.right + 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
+        ' ',
+      ),
+    },
+    x: inner.right + 20,
+    y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
+    // text: year - e,
+    age: e,
+  };
+});
+
 var gens = [
   {
     from: 1954,
@@ -212,18 +226,18 @@ class Pyramid extends PureComponent {
                 text: '출생년도',
               },
             },
-            yAxis2: axisTick.map(e => {
-              return {
-                tick: {
-                  d: ['M', inner.right, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.right + 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
-                    ' ',
-                  ),
-                },
-                x: inner.right + 20,
-                y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
-                text: year - e,
-              };
-            }),
+            // yAxis2: axisTick.map(e => {
+            //   return {
+            //     tick: {
+            //       d: ['M', inner.right, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.right + 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
+            //         ' ',
+            //       ),
+            //     },
+            //     x: inner.right + 20,
+            //     y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
+            //     text: year - e,
+            //   };
+            // }),
             total: {
               ...total,
               menChars: numberWithCommas(total.men).split(''),
@@ -275,28 +289,8 @@ class Pyramid extends PureComponent {
     });
   };
 
-  ticked = () => {
-    var from = 1960;
-    
-    var to = 2065;
-    
-    let delay = 100;
-    if (this.curr > to) {
-      this.curr = from;
-      
-    }
-    if (this.curr === to) {
-      delay = 2000;
-    }
-
-    this.update(this.curr);
-    this.curr++;
-    clearTimeout(this.timerId);
-
-  };
-
   componentDidMount() {
-    this.ticked();
+    this.update(this.curr);
   }
 
   componentWillUnmount() {
@@ -306,26 +300,27 @@ class Pyramid extends PureComponent {
   render() {
 
     // const { d, d2, total, year, xAxis, average, yAxis1, yAxis2, generations, label } = this.state;
-    const { d, d2, total, year, xAxis, average, yAxis2, generations, label } = this.state;
+    const { d, d2, total, year, xAxis, average, generations, label } = this.state;
 
     return template.call(this, {
       // variables
-      unused_average: average,
-      unused_d: d,
-      unused_d2: d2,
-      unused_generations: generations,
+      average,
+      d,
+      d2,
+      generations,
       imgSrc,
       inner,
       label,
-      unused_total: total,
+      total,
       viewBox,
-      unused_width: CONSTANT.WIDTH,
-      unused_xAxis: xAxis,
+      width: CONSTANT.WIDTH,
+      xAxis,
       yAxis1,
       yAxis2,
-      unused_year: year,
-      unused_yearChars: (year || '').toString().split(''),
-      unused_Fragment: Fragment,
+      year,
+      yearChars: (year || '').toString().split(''),
+      // components
+      Fragment,
     });
   }
 }
