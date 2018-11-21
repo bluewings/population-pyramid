@@ -1,6 +1,7 @@
 import { useClientRect } from 'hooks';
 import { default as testa } from '../../shared/styles/variables';
-import ThemeDropdown from 'components/ThemeDropdown';
+// import ThemeDropdown from 'components/ThemeDropdown';
+import Pyramid from 'components/Pyramid';
 
 // jsx
 import template from './home.screen.pug';
@@ -14,8 +15,8 @@ function Home() {
   // const [rect, clientRef] = useClientRect(['height', 'width'], null);
 
   return template({
-    // variables
-    unused_ThemeDropdown: ThemeDropdown,
+    // components
+    Pyramid,
   });
 }
 

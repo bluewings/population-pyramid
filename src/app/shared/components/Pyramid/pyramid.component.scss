@@ -1,0 +1,15 @@
+.root {
+  position: relative;
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.1;
+  }
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid red;
+  }
+}
