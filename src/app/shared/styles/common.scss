@@ -1,8 +1,10 @@
 @import 'variables';
 // @import 'fonts/noto-sans';
-@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans:400');
 @import 'misc/page-transition';
 @import '../../../../node_modules/font-awesome/css/font-awesome.css';
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900');
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans:400');
+
 // @import 'bootstrap/bootstrap';
 
 html,
@@ -14,6 +16,6 @@ body {
 }
 
 body {
-  font-family: 'Black Han Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: Montserrat, 'Black Han Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 14px;
 }
