@@ -15,7 +15,7 @@ const CONSTANT = {
   HEIGHT: 930,
   MARGIN: 80,
   BAR_HEIGHT: 5,
-}
+};
 
 CONSTANT.HEIGHT = CONSTANT.MARGIN * 2 + CONSTANT.BAR_HEIGHT * 100 + 300;
 
@@ -37,25 +37,35 @@ inner = {
 
 var axisTick = [...Array(11)].map((e, i) => i * 10);
 
-var yAxis1 = axisTick.map(e => {
+var yAxisL = axisTick.map(e => {
   return {
     x: inner.left - 20,
     y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
     tick: {
-      d: ['M', inner.left, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.left - 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
-        ' ',
-      ),
+      d: [
+        'M',
+        inner.left,
+        inner.bottom - e * CONSTANT.BAR_HEIGHT,
+        'L',
+        inner.left - 5,
+        inner.bottom - e * CONSTANT.BAR_HEIGHT,
+      ].join(' '),
     },
     text: e,
   };
 });
 
-let             yAxis2 = axisTick.map(e => {
+let yAxisR = axisTick.map(e => {
   return {
     tick: {
-      d: ['M', inner.right, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.right + 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
-        ' ',
-      ),
+      d: [
+        'M',
+        inner.right,
+        inner.bottom - e * CONSTANT.BAR_HEIGHT,
+        'L',
+        inner.right + 5,
+        inner.bottom - e * CONSTANT.BAR_HEIGHT,
+      ].join(' '),
     },
     x: inner.right + 20,
     y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
@@ -109,220 +119,179 @@ const getValue = maxCount => {
   };
 };
 
-class Pyramid extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.rootRef = React.createRef();
-    this.state = {
+const censusData = memoizeOne((width, height) => {
+  var gap = 0;
 
-    };
+  let chartHeight = CONSTANT.MARGIN + CONSTANT.BAR_HEIGHT * 100;
+  var centerBoxW = 180;
 
-    this.curr = props.year || 1960;
-    
+  let center = CONSTANT.WIDTH / 2;
+
+  if (CONSTANT.BAR_HEIGHT - gap < 3) {
+    gap = CONSTANT.BAR_HEIGHT - 3;
   }
 
-  censusData = memoizeOne((width, height) => {
-    var gap = 0;
-    
-    let chartHeight = CONSTANT.MARGIN + CONSTANT.BAR_HEIGHT * 100;
-    var centerBoxW = 180;
-    
-    let center = CONSTANT.WIDTH / 2;
+  const maxCount = Math.max(
+    ...entries(alData).reduce((prev, [, { max }]) => {
+      return [...prev, max.men, max.women];
+    }, []),
+  );
 
-    if (CONSTANT.BAR_HEIGHT - gap < 3) {
-      gap = CONSTANT.BAR_HEIGHT - 3;
-    }
+  var _maxCount = getValue(maxCount);
 
-    const maxCount = Math.max(
-      ...entries(alData).reduce((prev, [, { max }]) => {
-        return [...prev, max.men, max.women];
-      }, []),
-    );
+  center = CONSTANT.WIDTH / 2;
+  var halfW = center - inner.left - centerBoxW / 2;
 
-    this._maxCount = getValue(maxCount);
+  var widthWeight = halfW / _maxCount._maxCount;
 
-    center = CONSTANT.WIDTH / 2;
-    var halfW = center - inner.left - centerBoxW / 2;
+  var womenX = center + centerBoxW / 2;
+  var menX = center - centerBoxW / 2;
 
-    var widthWeight = halfW / this._maxCount._maxCount;
+  var xALW = menX - inner.left;
+  var xALEach = xALW / _maxCount.divide;
+  var xEachCnt = _maxCount._maxCount / _maxCount.divide / 1000;
 
-    var womenX = center + centerBoxW / 2;
-    var menX = center - centerBoxW / 2;
+  return {
+    center,
 
-    var xALW = menX - inner.left;
-    var xALEach = xALW / this._maxCount.divide;
-    var xEachCnt = this._maxCount._maxCount / this._maxCount.divide / 1000;
-
-    var axisTick = [...Array(11)].map((e, i) => i * 10);
-
-      this.center = center;
-    return {
-      center,
-
-      years: entries(alData).reduce((prev, [year, { average, total, max, data }]) => {
-        return {
-          ...prev,
-          [year]: {
-            average: {
-              men: {
-                y: inner.bottom - average.men * CONSTANT.BAR_HEIGHT,
-                text: average.men
-              },
-              women: {
-                y: inner.bottom - average.women * CONSTANT.BAR_HEIGHT,
-                text: average.women
-              },
+    years: entries(alData).reduce((prev, [year, { average, total, max, data }]) => {
+      return {
+        ...prev,
+        [year]: {
+          average: {
+            men: {
+              y: inner.bottom - average.men * CONSTANT.BAR_HEIGHT,
+              text: average.men,
             },
-            generations: gens
-              .filter(e => {
-                return true;
-              })
-              .map(e => {
-                return {
-                  x: center,
-                  y: chartHeight - (year - e.from) * CONSTANT.BAR_HEIGHT,
-                  text: e.name,
-                };
-              }),
-            maxCount: this._maxCount._maxCount,
-            divCount: this._maxCount.divide,
-            xAxis: {
-              tickL: [...Array(this._maxCount.divide + 1)].map((e, i) => {
-                var x = menX - xALEach * i;
-                var y = inner.bottom;
-                return {
-                  tick: ['M' + x + ' ' + y, 'L' + x + ' ' + (y + 5)].join(' '),
-                  text: {
-                    x,
-                    y: y + 35,
-                    text: xEachCnt * i + 'K',
-                  },
-                };
-              }),
-              tickR: [...Array(this._maxCount.divide + 1)].map((e, i) => {
-                var x = womenX + xALEach * i;
-                var y = inner.bottom;
-                return {
-                  tick: ['M' + x + ' ' + y, 'L' + x + ' ' + (y + 5)].join(' '),
-                  text: {
-                    x,
-                    y: y + 35,
-                    text: xEachCnt * i + 'K',
-                  },
-                };
-              }),
+            women: {
+              y: inner.bottom - average.women * CONSTANT.BAR_HEIGHT,
+              text: average.women,
             },
-            label: {
-              yAxis1: {
-                x: inner.left - 20,
-                y: inner.bottom - 108 * CONSTANT.BAR_HEIGHT,
-                
-                text: '나이',
-              },
-              yAxis2: {
-                x: inner.right + 17,
-                y: inner.bottom - 108 * CONSTANT.BAR_HEIGHT,
-                
-                text: '출생년도',
-              },
-            },
-            // yAxis2: axisTick.map(e => {
-            //   return {
-            //     tick: {
-            //       d: ['M', inner.right, inner.bottom - e * CONSTANT.BAR_HEIGHT, 'L', inner.right + 5, inner.bottom - e * CONSTANT.BAR_HEIGHT].join(
-            //         ' ',
-            //       ),
-            //     },
-            //     x: inner.right + 20,
-            //     y: inner.bottom - e * CONSTANT.BAR_HEIGHT,
-            //     text: year - e,
-            //   };
-            // }),
-            total: {
-              ...total,
-              menChars: numberWithCommas(total.men).split(''),
-              womenChars: numberWithCommas(total.women).split(''),
-              allChars: [...(total.all / 1000000).toFixed(1).split(''), 'M'],
-            },
-            women: data
-              .map(({ age, women }) => {
-                return {
-                  age,
-                  d: [
-                    'M ' + womenX + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
-                    'L ' + (womenX + women * widthWeight) + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
-                    'L ' + (womenX + women * widthWeight) + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
-                    'L ' + womenX + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
-                  ].join(' '),
-                };
-              }),
-
-            men: data
-              .map(({ age, men }) => {
-                return {
-                  age,
-                  d: [
-                    'M ' + menX + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
-                    'L ' + (menX - men * widthWeight) + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
-                    'L ' + (menX - men * widthWeight) + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
-                    'L ' + menX + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
-                  ].join(' '),
-                };
-              })
-
           },
-        };
-      }, {}),
-    };
-  });
+          generations: gens
+            .filter(e => {
+              return true;
+            })
+            .map(e => {
+              return {
+                x: center,
+                y: chartHeight - (year - e.from) * CONSTANT.BAR_HEIGHT,
+                text: e.name,
+              };
+            }),
+          maxCount: _maxCount._maxCount,
+          divCount: _maxCount.divide,
+          xAxisL: [...Array(_maxCount.divide + 1)].map((e, i) => {
+            var x = menX - xALEach * i;
+            var y = inner.bottom;
+            return {
+              tick: ['M' + x + ' ' + y, 'L' + x + ' ' + (y + 5)].join(' '),
+              text: {
+                x,
+                y: y + 35,
+                text: xEachCnt * i + 'K',
+              },
+            };
+          }),
+          xAxisR: [...Array(_maxCount.divide + 1)].map((e, i) => {
+            var x = womenX + xALEach * i;
+            var y = inner.bottom;
+            return {
+              tick: ['M' + x + ' ' + y, 'L' + x + ' ' + (y + 5)].join(' '),
+              text: {
+                x,
+                y: y + 35,
+                text: xEachCnt * i + 'K',
+              },
+            };
+          }),
+          label: {
+            yAxisL: {
+              x: inner.left - 20,
+              y: inner.bottom - 108 * CONSTANT.BAR_HEIGHT,
 
-  update = years => {
+              text: '나이',
+            },
+            yAxisR: {
+              x: inner.right + 17,
+              y: inner.bottom - 108 * CONSTANT.BAR_HEIGHT,
 
-    var censusData = this.censusData(null, null);
-    var data = censusData.years[years];
+              text: '출생년도',
+            },
+          },
+          total: {
+            ...total,
+            menChars: numberWithCommas(total.men).split(''),
+            womenChars: numberWithCommas(total.women).split(''),
+            allChars: [...(total.all / 1000000).toFixed(1).split(''), 'M'],
+          },
+          women: data.map(({ age, women }) => {
+            return {
+              age,
+              d: [
+                'M ' + womenX + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
+                'L ' +
+                  (womenX + women * widthWeight) +
+                  ' ' +
+                  (chartHeight - age * CONSTANT.BAR_HEIGHT),
+                'L ' +
+                  (womenX + women * widthWeight) +
+                  ' ' +
+                  (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
+                'L ' + womenX + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
+              ].join(' '),
+            };
+          }),
 
-    this.setState({
-      year: years,
-      d: data.men,
-      d2: data.women,
-      ...data,
-    });
+          men: data.map(({ age, men }) => {
+            return {
+              age,
+              d: [
+                'M ' + menX + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
+                'L ' + (menX - men * widthWeight) + ' ' + (chartHeight - age * CONSTANT.BAR_HEIGHT),
+                'L ' +
+                  (menX - men * widthWeight) +
+                  ' ' +
+                  (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
+                'L ' + menX + ' ' + (chartHeight - (age + 1) * CONSTANT.BAR_HEIGHT + gap),
+              ].join(' '),
+            };
+          }),
+        },
+      };
+    }, {}),
   };
+});
 
-  componentDidMount() {
-    this.update(this.curr);
-  }
+function Pyramid(props) {
+  const { year } = props;
+  var _censusData = censusData(null, null);
+  var data = _censusData.years[year];
 
-  componentWillUnmount() {
-    clearTimeout(this.timerId);
-  }
+  const { total, center, xAxisL, xAxisR, men, women, average, generations, label } = data; // this.state;
 
-  render() {
-
-    // const { d, d2, total, year, xAxis, average, yAxis1, yAxis2, generations, label } = this.state;
-    const { d, d2, total, year, xAxis, average, generations, label } = this.state;
-
-    return template.call(this, {
-      // variables
-      average,
-      d,
-      d2,
-      generations,
-      imgSrc,
-      inner,
-      label,
-      total,
-      viewBox,
-      width: CONSTANT.WIDTH,
-      xAxis,
-      yAxis1,
-      yAxis2,
-      year,
-      yearChars: (year || '').toString().split(''),
-      // components
-      Fragment,
-    });
-  }
+  return template({
+    // variables
+    average,
+    center,
+    generations,
+    unused_imgSrc: imgSrc,
+    inner,
+    label,
+    men,
+    total,
+    viewBox,
+    width: CONSTANT.WIDTH,
+    women,
+    xAxisL,
+    xAxisR,
+    yAxisL,
+    yAxisR,
+    year,
+    yearChars: (year || '').toString().split(''),
+    // components
+    Fragment,
+  });
 }
 
 export default Pyramid;

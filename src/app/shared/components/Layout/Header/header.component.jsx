@@ -50,7 +50,7 @@ function Header ({ fixed, theme = '' }) {
   return template({
     // variables
     unused_fixedClass: fixedClass,
-    flagKor,
+    unused_flagKor: flagKor,
     navbarClass,
     unused_theme: theme,
     // components

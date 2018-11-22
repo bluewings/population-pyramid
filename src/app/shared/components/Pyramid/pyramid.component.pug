@@ -1,6 +1,6 @@
 // @import .scss => styles
 div(className='{styles.root}')
-  img(src='{imgSrc}' width="100%")
+  //- img(src='{imgSrc}' width="100%")
   svg(width='100%', viewBox='{viewBox}', xmlns='http://www.w3.org/2000/svg')
 
     g(className='{styles.inner}')
@@ -10,13 +10,13 @@ div(className='{styles.root}')
         width='{inner.width}', height='{inner.height}')
 
       text(@if='label'
-        x='{label.yAxis1.x}', y='{label.yAxis1.y}',
+        x='{label.yAxisL.x}', y='{label.yAxisL.y}',
         textAnchor='end'
         alignmentBaseline='middle'
         letterSpacing='2')
-        | {label.yAxis1.text}
-      path(@for='yAxis in yAxis1', d='{yAxis.tick.d}')
-      text(@for='yAxis in yAxis1', x='{yAxis.x}', y='{yAxis.y}',
+        | {label.yAxisL.text}
+      path(@for='yAxis in yAxisL', d='{yAxis.tick.d}')
+      text(@for='yAxis in yAxisL', x='{yAxis.x}', y='{yAxis.y}',
         textAnchor='end'
         alignmentBaseline='middle'
         letterSpacing='2')
@@ -24,21 +24,21 @@ div(className='{styles.root}')
       
 
       text(@if='label'
-        x='{label.yAxis2.x}', y='{label.yAxis2.y}',
+        x='{label.yAxisR.x}', y='{label.yAxisR.y}',
         textAnchor="start"
         alignmentBaseline="middle"
         letterSpacing='2')
-        | {label.yAxis2.text}
-      path(@for='yAxis in yAxis2', d='{yAxis.tick.d}')
-      text(@for='yAxis in yAxis2', x='{yAxis.x}', y='{yAxis.y}',
+        | {label.yAxisR.text}
+      path(@for='yAxis in yAxisR', d='{yAxis.tick.d}')
+      text(@for='yAxis in yAxisR', x='{yAxis.x}', y='{yAxis.y}',
         textAnchor="start"
         alignmentBaseline="middle"
         letterSpacing='2')
         | {year - yAxis.age}
 
 
-      Fragment(@if='xAxis')
-        g(@for='eee in xAxis.tickL')
+      Fragment(@if='xAxisL && xAxisR')
+        g(@for='eee in xAxisL')
           path(d='{eee.tick}', stroke='black')
           text(x='{eee.text.x}',
             y='{eee.text.y}',
@@ -46,7 +46,7 @@ div(className='{styles.root}')
             textAnchor="middle"
             letterSpacing='2')
             | {eee.text.text}
-        g(@for='eee in xAxis.tickR')
+        g(@for='eee in xAxisR')
           path(d='{eee.tick}', stroke='black')
           text(x='{eee.text.x}',
             y='{eee.text.y}',
@@ -55,36 +55,36 @@ div(className='{styles.root}')
             letterSpacing='2')
             | {eee.text.text}
 
-    g
-
-
-      text(@for='(char, key, i) in yearChars',
-        x='{((width - (yearChars.length - 1) * 40) / 2) + (i * 40)}', y='{115}',
-        fontSize='36px',
-        
-        textAnchor='middle'
-        alignmentBaseline="middle"
-        ) {char}
-        
 
 
       g
+
+
+        text(@for='(char, key, i) in yearChars',
+          x='{((width - (yearChars.length - 1) * 40) / 2) + (i * 40)}', y='{115}',
+          fontSize='36px',
+          
+          textAnchor='middle'
+          alignmentBaseline="middle"
+          ) {char}
+          
+
 
       g
         text(@for='e in generations', x='{width / 2}', y='{e.y}',
           textAnchor='middle' )
           | {e.text}
+      g
+        //- 좌측 인구 피라미드
+        Fragment(@if='men')
+          path(@for='e in men',
+            d='{e.d}', fill='none', stroke='black', strokeWidth='{0.5}')
 
-      //- 좌측 인구 피라미드
-      Fragment(@if='d')
-        path(@for='e in d',
-          d='{e.d}', fill='none', stroke='black', strokeWidth='{0.5}')
-
-      //- 우측 인구 피라미드
-      Fragment(@if='d2')
-        path(@for='e in d2',
-          d='{e.d}', fill='none', stroke='black')
-        
+        //- 우측 인구 피라미드
+        Fragment(@if='women')
+          path(@for='e in women',
+            d='{e.d}', fill='none', stroke='black')
+          
 
       Fragment(@if='total')
 
@@ -108,7 +108,7 @@ div(className='{styles.root}')
           alignmentBaseline="middle"
           ) {char}
         text(@for='(char, key, i) in total.allChars',
-          x='{this.center + ((total.allChars.length - 1) * -14) + (i * 28)}', y='{915}',
+          x='{center + ((total.allChars.length - 1) * -14) + (i * 28)}', y='{915}',
           fontSize='24px',
           
           textAnchor='middle'
@@ -124,4 +124,3 @@ div(className='{styles.root}')
       )
         | 평균 연령 = {average.men.text}    
 
-  div(ref='{this.rootRef}')
