@@ -1,5 +1,7 @@
 // @import .scss => styles
 div(className='{styles.root}')
+  h1 {JSON.stringify(fertility)}
+  h1 {JSON.stringify(displayGeneration)}
   //- img(src='{imgSrc}' width="100%")
   svg(width='100%', viewBox='{viewBox}', xmlns='http://www.w3.org/2000/svg')
 
@@ -70,7 +72,7 @@ div(className='{styles.root}')
           
 
 
-      g
+      g(@if='displayGeneration')
         text(@for='e in generations', x='{width / 2}', y='{e.y}',
           textAnchor='middle' )
           | {e.text}

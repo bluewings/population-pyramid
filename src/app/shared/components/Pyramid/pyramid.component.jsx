@@ -21,7 +21,7 @@ CONSTANT.HEIGHT = CONSTANT.MARGIN * 2 + CONSTANT.BAR_HEIGHT * 100 + 300;
 
 const viewBox = [0, 0, CONSTANT.WIDTH, CONSTANT.HEIGHT].join(' ');
 
-const alData = al1.low;
+
 
 let inner = {
   top: CONSTANT.MARGIN,
@@ -119,11 +119,13 @@ const getValue = maxCount => {
   };
 };
 
-const censusData = memoizeOne((width, height) => {
+const censusData = memoizeOne((fertility, displayGeneration) => {
   var gap = 0;
 
+  const alData = al1[fertility[0]];
+
   let chartHeight = CONSTANT.MARGIN + CONSTANT.BAR_HEIGHT * 100;
-  var centerBoxW = 180;
+  var centerBoxW = displayGeneration ? 180 : 0;
 
   let center = CONSTANT.WIDTH / 2;
 
@@ -263,9 +265,8 @@ const censusData = memoizeOne((width, height) => {
   };
 });
 
-function Pyramid(props) {
-  const { year } = props;
-  var _censusData = censusData(null, null);
+function Pyramid({ year, fertility, displayGeneration }) {
+  var _censusData = censusData(fertility, displayGeneration);
   var data = _censusData.years[year];
 
   const { total, center, xAxisL, xAxisR, men, women, average, generations, label } = data; // this.state;
@@ -274,6 +275,8 @@ function Pyramid(props) {
     // variables
     average,
     center,
+    displayGeneration,
+    fertility,
     generations,
     unused_imgSrc: imgSrc,
     inner,

@@ -7,13 +7,30 @@ div(className='{styles.root}')
       //- .container(ref='{clientRef}')
     .container
       .row
-        .col-sm-9
-          Pyramid(year='{year}')
+        //- .col-sm-9
+          Pyramid(year='{year}', fertility='{types}',
+            displayGeneration='{displayGeneration}',
+          )
         .col-sm-3
           h2 {year}
+          h3 {JSON.stringify(types)}
+          input(type='checkbox', checked='{displayGeneration}',
+            onChange='{handleDisplayGenerationChange}')
           input.form-control(type='number', defaultValue='{year}',
             onChange='{handleYearChange}')
+          
+          .btn-group
+            button.btn(@for='type in allTypes',
+              type='button',
+              data-type='{type}',
+              onClick='{handleTypeClick}',
+              className='{types.indexOf(type) !== -1 ? "btn-primary" : "btn-secondary"}'
+              ) {type}
 
+        .col-sm-12
+          Pyramid(year='{year}', fertility='{types}',
+            displayGeneration='{displayGeneration}',
+          )
 
 
       //- .row
