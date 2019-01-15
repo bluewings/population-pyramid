@@ -1,5 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies, global-require */
 const path = require('path');
 const { getIn, setIn } = require('immutable');
+const tailwindcss = require('tailwindcss');
 
 const babelLoader = {
   loader: require.resolve('babel-loader'),
@@ -39,6 +41,7 @@ const postcssLoader = {
     // https://github.com/facebookincubator/create-react-app/issues/2677
     ident: 'postcss',
     plugins: () => [
+      tailwindcss(),
       require('postcss-flexbugs-fixes'),
       require('autoprefixer')({
         browsers: [
