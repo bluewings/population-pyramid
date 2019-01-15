@@ -1,0 +1,47 @@
+parser: babel-eslint
+extends: airbnb
+globals:
+  __DEV__: true
+plugins:
+  - react
+  - jsx-a11y
+  - import
+env:
+  browser: true
+  jest: true
+rules:
+  camelcase:
+    - 0
+  jsx-a11y/anchor-is-valid:
+    - 0
+  no-alert:
+    - 0
+  no-console:
+    - 0
+  no-trailing-spaces:
+    - 0
+  no-underscore-dangle:
+    - 0
+  react/jsx-filename-extension:
+    - 1
+    - extensions:
+        - '.js'
+        - '.jsx'
+  react/forbid-prop-types:
+    - 1
+    - forbid:
+        - any
+        - array
+        # - object
+  react/sort-comp:
+    - 0
+  react/no-typos:
+    - 0
+  object-curly-newline:
+    - 0
+settings:
+  import/resolver:
+    node:
+      moduleDirectory:
+        - node_modules
+        - shared

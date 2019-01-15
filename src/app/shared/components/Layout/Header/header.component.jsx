@@ -30,6 +30,10 @@ import template from './header.component.pug';
 
 function Header ({ fixed, theme = '' }) {
 
+  console.log(fixed);
+
+  console.log(useMemo)
+
   const fixedClass = useMemo(() => {
     if (!fixed) {
       return null;  
@@ -50,7 +54,7 @@ function Header ({ fixed, theme = '' }) {
   return template({
     // variables
     unused_fixedClass: fixedClass,
-    unused_flagKor: flagKor,
+    flagKor,
     navbarClass,
     unused_theme: theme,
     // components

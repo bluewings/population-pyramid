@@ -11,7 +11,13 @@ div(className='{styles.root}')
           Pyramid(year='{year}', fertility='{types}',
             displayGeneration='{displayGeneration}',
           )
-        .col-sm-3
+
+
+        .col-sm-10
+          Pyramid(year='{year}', fertility='{types}',
+            displayGeneration='{displayGeneration}',
+          )
+        .col-sm-2
           h2 {year}
           h3 {JSON.stringify(types)}
           input(type='checkbox', checked='{displayGeneration}',
@@ -26,12 +32,6 @@ div(className='{styles.root}')
               onClick='{handleTypeClick}',
               className='{types.indexOf(type) !== -1 ? "btn-primary" : "btn-secondary"}'
               ) {type}
-
-        .col-sm-12
-          Pyramid(year='{year}', fertility='{types}',
-            displayGeneration='{displayGeneration}',
-          )
-
 
       //- .row
         .col-sm-9
